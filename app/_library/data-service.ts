@@ -1,11 +1,11 @@
 import { eachDayOfInterval } from 'date-fns';
-import { database } from "./database";
+import { database } from "./database-config";
 
 //-----------------------------------------------------GET SINLGE CABIN
 
 export async function getCabin(id) {
   const { data, error } = await database
-    .from('cabins')
+    .from('Cabins')
     .select('*')
     .eq('id', id)
     .single();
@@ -40,8 +40,8 @@ export async function getCabinPrice(id) {
 
 export const getCabins = async function () {
   const { data, error } = await database
-    .from('cabins')
-    .select('id, name, maxCapacity, regularPrice, discount, image')
+    .from('Cabins')
+    .select('id, name, num_Bedrooms, base_price, discount, picture')
     .order('name');
 
   if (error) {
