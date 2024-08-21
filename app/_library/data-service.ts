@@ -1,10 +1,10 @@
 import { eachDayOfInterval } from 'date-fns';
+import { database } from "./database";
 
-/////////////
-// GET
+//-----------------------------------------------------GET SINLGE CABIN
 
 export async function getCabin(id) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('cabins')
     .select('*')
     .eq('id', id)
@@ -20,8 +20,10 @@ export async function getCabin(id) {
   return data;
 }
 
+//----------------------------------------------------------GET CABIN PRICE
+
 export async function getCabinPrice(id) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('cabins')
     .select('regularPrice, discount')
     .eq('id', id)
@@ -34,8 +36,10 @@ export async function getCabinPrice(id) {
   return data;
 }
 
+//----------------------------------------------------------GET MULTPLE CABINS
+
 export const getCabins = async function () {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('cabins')
     .select('id, name, maxCapacity, regularPrice, discount, image')
     .order('name');
@@ -48,9 +52,10 @@ export const getCabins = async function () {
   return data;
 };
 
-// Guests are uniquely identified by their email address
+//----------------------------------------------------------GET GUEST
+
 export async function getGuest(email) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('guests')
     .select('*')
     .eq('email', email)
@@ -60,8 +65,10 @@ export async function getGuest(email) {
   return data;
 }
 
+//----------------------------------------------------------GET SINGLE BOOKING
+
 export async function getBooking(id) {
-  const { data, error, count } = await supabase
+  const { data, error, count } = await database
     .from('bookings')
     .select('*')
     .eq('id', id)
@@ -75,8 +82,10 @@ export async function getBooking(id) {
   return data;
 }
 
+//----------------------------------------------------------GET MULTIPLE BOOKINGS
+
 export async function getBookings(guestId) {
-  const { data, error, count } = await supabase
+  const { data, error, count } = await database
     .from('bookings')
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
@@ -93,13 +102,15 @@ export async function getBookings(guestId) {
   return data;
 }
 
+//----------------------------------------------------------GET BOOKING DATES BY CABIN ID
+
 export async function getBookedDatesByCabinId(cabinId) {
   let today = new Date();
   today.setUTCHours(0, 0, 0, 0);
   today = today.toISOString();
 
   // Getting all bookings
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('bookings')
     .select('*')
     .eq('cabinId', cabinId)
@@ -123,8 +134,10 @@ export async function getBookedDatesByCabinId(cabinId) {
   return bookedDates;
 }
 
+//----------------------------------------------------------GET SETTINGS
+
 export async function getSettings() {
-  const { data, error } = await supabase.from('settings').select('*').single();
+  const { data, error } = await database.from('settings').select('*').single();
 
   if (error) {
     console.error(error);
@@ -133,6 +146,8 @@ export async function getSettings() {
 
   return data;
 }
+
+//----------------------------------------------------------GET COUNTRIES
 
 export async function getCountries() {
   try {
@@ -146,11 +161,10 @@ export async function getCountries() {
   }
 }
 
-/////////////
-// CREATE
+//----------------------------------------------------------CREATE NEW GUEST
 
 export async function createGuest(newGuest) {
-  const { data, error } = await supabase.from('guests').insert([newGuest]);
+  const { data, error } = await database.from('guests').insert([newGuest]);
 
   if (error) {
     console.error(error);
@@ -161,7 +175,7 @@ export async function createGuest(newGuest) {
 }
 
 export async function createBooking(newBooking) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('bookings')
     .insert([newBooking])
     // So that the newly created object gets returned!
@@ -176,12 +190,11 @@ export async function createBooking(newBooking) {
   return data;
 }
 
-/////////////
-// UPDATE
+//-----------------------------------------------------------------------------UPDATE GUEST
 
 // The updatedFields is an object which should ONLY contain the updated data
 export async function updateGuest(id, updatedFields) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('guests')
     .update(updatedFields)
     .eq('id', id)
@@ -195,8 +208,10 @@ export async function updateGuest(id, updatedFields) {
   return data;
 }
 
+//----------------------------------------------------------UPDATE BOOKING
+
 export async function updateBooking(id, updatedFields) {
-  const { data, error } = await supabase
+  const { data, error } = await database
     .from('bookings')
     .update(updatedFields)
     .eq('id', id)
@@ -210,11 +225,10 @@ export async function updateBooking(id, updatedFields) {
   return data;
 }
 
-/////////////
-// DELETE
+//----------------------------------------------------------DELETE BOOKING
 
 export async function deleteBooking(id) {
-  const { data, error } = await supabase.from('bookings').delete().eq('id', id);
+  const { data, error } = await database.from('bookings').delete().eq('id', id);
 
   if (error) {
     console.error(error);
