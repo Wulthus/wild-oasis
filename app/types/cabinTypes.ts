@@ -1,8 +1,9 @@
 export interface Cabin {
     id: number, 
     name: string, 
-    maxCapacity: number, 
-    regularPrice: number, 
+    num_Bedrooms: number, 
+    base_price: number, 
     discount: number, 
-    image: string,
+    picture: string,
+    description?: string,
 }

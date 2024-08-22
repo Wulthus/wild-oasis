@@ -3,7 +3,7 @@ import { database } from "./database-config";
 
 //-----------------------------------------------------GET SINLGE CABIN
 
-export async function getCabin(id) {
+export async function getCabin(id: number) {
   const { data, error } = await database
     .from('Cabins')
     .select('*')
@@ -22,7 +22,7 @@ export async function getCabin(id) {
 
 //----------------------------------------------------------GET CABIN PRICE
 
-export async function getCabinPrice(id) {
+export async function getCabinPrice(id: number) {
   const { data, error } = await database
     .from('cabins')
     .select('regularPrice, discount')

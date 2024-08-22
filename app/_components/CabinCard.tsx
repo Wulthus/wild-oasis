@@ -3,9 +3,20 @@ import { Cabin } from "../types/cabinTypes";
 import Image from "next/image";
 import Link from "next/link";
 
+interface CabinCardProps {
+  cabin: Cabin,
+}
 
-function CabinCard({ cabin }: Cabin) {
-  const { id, name, num_Bedrooms, base_price, discount, picture } = cabin;
+
+function CabinCard({ cabin }: CabinCardProps) {
+  const { 
+    id, 
+    name, 
+    num_Bedrooms, 
+    base_price, 
+    discount, 
+    picture 
+  } = cabin;
 
   return (
     <div className="flex border-primary-800 border">
