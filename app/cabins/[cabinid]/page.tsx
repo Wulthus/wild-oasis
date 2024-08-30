@@ -1,4 +1,4 @@
-import { getCabin } from "@/app/_library/data-service";
+import { getCabin, getCabins } from "@/app/_library/data-service";
 import { Cabin } from "@/app/types/cabinTypes";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 
@@ -19,12 +19,24 @@ export async function generateMetadata({ params }: CabinPageProps){
     };
 }
 
+export async function generateStaticParams(){
+  
+  const cabins: Cabin[] = await getCabins();
+  const IDs = cabins.map((cabin)=>({
+    cabinid: String(cabin.id)
+  }));
+
+  return IDs
+
+}
+
 export default async function Page({ params }: CabinPageProps) {
 
     const cabin: Cabin = await getCabin(params.cabinid);
 
   const { id, name, num_Bedrooms, base_price, discount, picture, description } =
     cabin;
+
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
