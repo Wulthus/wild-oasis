@@ -1,0 +1,1 @@
+export type FilterType = 'small' | 'medium' | 'large' | 'all';

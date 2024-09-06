@@ -1,3 +1,4 @@
+import TextExpander from "@/app/_components/TextExpander";
 import { getCabin, getCabins } from "@/app/_library/data-service";
 import { Cabin } from "@/app/types/cabinTypes";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
@@ -30,6 +31,8 @@ export async function generateStaticParams(){
 
 }
 
+export const revalidate = 360;
+
 export default async function Page({ params }: CabinPageProps) {
 
     const cabin: Cabin = await getCabin(params.cabinid);
@@ -50,7 +53,9 @@ export default async function Page({ params }: CabinPageProps) {
             Cabin {name}
           </h3>
 
-          <p className="text-lg text-primary-300 mb-10">{description}</p>
+          <p className="text-lg text-primary-300 mb-10">
+            <TextExpander string={description} />
+          </p>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex gap-3 items-center">

@@ -2,6 +2,9 @@ import { Suspense } from "react";
 
 import CabinList from "@/app/_components/CabinList";
 import Spinner from "@/app/_components/Spinner";
+import Filter from "../_components/Filter";
+
+import { FilterType } from "../types/filterTypes";
 
   export const metadata = {
     title: "Cabins |",
@@ -9,7 +12,15 @@ import Spinner from "@/app/_components/Spinner";
 
   export const revalidate = 3600;
 
-  export default function Page() {
+  interface CabinsPageProps {
+    searchParams: {
+      capacity?: FilterType,
+    };
+  }
+
+  export default function Page( { searchParams }: CabinsPageProps) {
+
+    const filter = searchParams?.capacity ?? "all";
 
     return (
       <div>
@@ -24,8 +35,11 @@ import Spinner from "@/app/_components/Spinner";
           away from home. The perfect spot for a peaceful, calm vacation. Welcome
           to paradise.
         </p>
-        <Suspense fallback={<Spinner />}>
-          <CabinList />
+        <div className="flex justify-end mb-8">
+          <Filter />
+        </div>
+        <Suspense fallback={<Spinner />} key={filter}>
+          <CabinList filter={filter}/>
         </Suspense>
       </div>
     );
